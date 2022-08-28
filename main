@@ -1,0 +1,120 @@
+-- Script Was Made By Hxx#7222
+
+local lplr = game.Players.LocalPlayer
+local camera = game.Workspace.CurrentCamera
+local currentCamera = workspace.CurrentCamera
+local worldToViewportPoint = currentCamera.worldToViewportPoint
+
+local HeadOffset = Vector3.new(0, 0.5, 0)
+local legOffset = Vector3.new(0, 3, 0)
+
+for _, v in pairs(game.Players:GetChildren()) do
+	local boxOutline = Drawing.new("Square")
+	boxOutline.Visible = false
+	boxOutline.Color = Color3.new(255, 0, 0)
+	boxOutline.Thickness = 3
+	boxOutline.Transparency = 1
+	boxOutline.Filled = false
+
+	local Box = Drawing.new("Square")
+	Box.Visible = false
+	Box.Color = Color3.new(255, 0, 0)
+	Box.Thickness = 1
+	Box.Transparency = 1
+	Box.Filled = false
+
+	function boxESP()
+		game:GetService("RunService").RenderStepped:Connect(function()
+			if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health ~= 0 then
+				local vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
+
+				local RootPart = v.Character.HumanoidRootPart
+				local Head = v.Character.Head
+				local RootPosition, RootVis = worldToViewportPoint(currentCamera, RootPart.Position)
+				local HeadPosition = worldToViewportPoint(currentCamera, Head.Position + HeadOffset)
+				local legPosition = worldToViewportPoint(currentCamera, RootPart.Position - legOffset)
+
+				if onScreen then
+					boxOutline.Size = Vector3.new(1000 / RootPosition.Z, HeadPosition.Y - legPosition.Y)
+					boxOutline.Position = Vector3.new(RootPosition.X - boxOutline.Size.X / 2, RootPosition.Y - boxOutline.Size.Y / 1.5)
+					boxOutline.Visible = true
+
+					Box.Size = Vector3.new(1000 / RootPosition.Z, HeadPosition.Y - legPosition.Y)
+					Box.Position = Vector3.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 1.5)
+					Box.Visible = true
+
+					if v.Team == lplr.Team then
+						boxOutline.Visible = false
+						Box.Visible = false
+					else
+						boxOutline.Visible = true
+						Box.Visible = true
+					end
+				else
+					boxOutline.Visible = false
+					Box.Visible = false
+				end
+			else
+				boxOutline.Visible = false
+				Box.Visible = false
+			end
+		end)
+	end
+	coroutine.wrap(boxESP)()
+end
+
+game.Players.PlayerAdded:Connect(function(v)
+	local boxOutline = Drawing.new("Square")
+	boxOutline.Visible = false
+	boxOutline.Color = Color3.new(0, 0, 0)
+	boxOutline.Thickness = 3
+	boxOutline.Transparency = 1
+	boxOutline.Filled = false
+
+	local Box = Drawing.new("Square")
+	Box.Visible = false
+	Box.Color = Color3.new(1, 1, 1)
+	Box.Thickness = 1
+	Box.Transparency = 1
+	Box.Filled = false
+
+	function boxESP()
+		game:GetService("RunService").RenderStepped:Connect(function()
+			if v.Character ~= nil and v.Character:FindFirstChild("Humanoid") ~= nil and v.Character:FindFirstChild("HumanoidRootPart") ~= nil and v ~= lplr and v.Character.Humanoid.Health ~= 0 then
+				local vector, onScreen = camera:worldToViewportPoint(v.Character.HumanoidRootPart.Position)
+
+				local RootPart = v.Character.HumanoidRootPart
+				local Head = v.Character.Head
+				local RootPosition, RootVis = worldToViewportPoint(currentCamera, RootPart.Position)
+				local HeadPosition = worldToViewportPoint(currentCamera, Head.Position + HeadOffset)
+				local legPosition = worldToViewportPoint(currentCamera, RootPart.Position - legOffset)
+
+				if onScreen then
+					boxOutline.Size = Vector3.new(1000 / RootPosition.Z, HeadPosition.Y - legPosition.Y)
+					boxOutline.Position = Vector3.new(RootPosition.X - boxOutline.Size.X / 2, RootPosition.Y - boxOutline.Size.Y / 1.5)
+					boxOutline.Visible = true
+
+					Box.Size = Vector3.new(1000 / RootPosition.Z, HeadPosition.Y - legPosition.Y)
+					Box.Position = Vector3.new(RootPosition.X - Box.Size.X / 2, RootPosition.Y - Box.Size.Y / 1.5)
+					Box.Visible = true
+
+					if v.Team == lplr.Team then
+						boxOutline.Visible = false
+						Box.Visible = false
+					else
+						boxOutline.Visible = true
+						Box.Visible = true
+					end
+					
+				else
+					boxOutline.Visible = false
+					Box.Visible = false
+				end
+			else
+				boxOutline.Visible = false
+				Box.Visible = false
+			end
+		end)
+	end
+	coroutine.wrap(boxESP)()
+end)
